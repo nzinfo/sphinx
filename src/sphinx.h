@@ -33,6 +33,8 @@
 
 	#define UNALIGNED_RAM_ACCESS	1
 	#define USE_LITTLE_ENDIAN		1
+    #define USE_PYTHON              1       /// whether to compile Python support, NOTE:Coreseek Fork, this option must be on!
+    #define USE_PYTHON_DEBUG        0       ///link to _d.lib or not
 #else
 	#define USE_WINDOWS		0	/// whether to compile for Windows
 #endif
@@ -1541,6 +1543,7 @@ struct CSphColumnInfo
 	bool			m_bIndexed;		///< whether to index this column as fulltext field too
 
 	int				m_iIndex;		///< index into source result set (-1 for joined fields)
+    int				m_iMVAIndex;	///< index the mva indexer, for faster reassign values. -pysource
 	CSphAttrLocator	m_tLocator;		///< attribute locator in the row
 
 	ESphAttrSrc		m_eSrc;			///< attr source (for multi-valued attrs only)
@@ -2046,6 +2049,7 @@ enum ESphOnFileFieldError
 	FFE_FAIL_INDEX
 };
 
+int sphAddMva64 ( CSphVector<DWORD> & dStorage, int64_t iVal ); //forward declare.
 
 /// generic document source
 /// provides multi-field support and generic tokenizer

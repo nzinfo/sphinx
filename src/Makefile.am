@@ -3,8 +3,17 @@ SRC_SPHINX = sphinx.cpp sphinxexcerpt.cpp sphinxquery.cpp \
 	sphinxutils.cpp sphinxstd.cpp sphinxsort.cpp sphinxexpr.cpp sphinxfilter.cpp \
 	sphinxsearch.cpp sphinxrt.cpp sphinxjson.cpp sphinxudf.c sphinxaot.cpp sphinxplugin.cpp
 
+if USE_PYTHON
+SRC_PYTHONLAYER = \
+	py_layer.cpp \
+	py_source.cpp \
+	py_source2.cpp \
+	py_iface.cpp \
+	py_csft.cxx
+endif
+
 noinst_LIBRARIES = libsphinx.a
-libsphinx_a_SOURCES = $(SRC_SPHINX)
+libsphinx_a_SOURCES = $(SRC_SPHINX) $(SRC_PYTHONLAYER) 
 
 bin_PROGRAMS = indexer searchd spelldump indextool wordbreaker
 noinst_PROGRAMS = tests
@@ -16,7 +25,7 @@ indextool_SOURCES = indextool.cpp
 tests_SOURCES = tests.cpp
 wordbreaker_SOURCES = wordbreaker.cpp
 
-BUILT_SOURCES = extract-version
+BUILT_SOURCES = extract-version py_csft.cxx
 .PHONY: extract-version
 extract-version:
 	/bin/sh git_commit_id.sh

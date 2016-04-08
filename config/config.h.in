@@ -285,6 +285,9 @@
 /* Define to 1 if you want to compile with PostgreSQL support */
 #undef USE_PGSQL
 
+/* Define to compile in Python datasource support. */
+#undef USE_PYTHON
+
 /* RE2 library support */
 #undef USE_RE2
 

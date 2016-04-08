@@ -3,6 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
 AC_INIT([sphinx], [2.2.10], [shodan(at)sphinxsearch.com])
 
+m4_include([python.m4])
 dnl --------------------------------------------------------------------------
 
 SPHINX_CONFIGURE_PART([checking build environment])
@@ -10,8 +11,11 @@ SPHINX_CONFIGURE_PART([checking build environment])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AM_MAINTAINER_MODE
+AM_PATH_PYTHON
 AC_CONFIG_SRCDIR([src/searchd.cpp])
 AC_CONFIG_HEADER([config/config.h])
+
+AM_PROG_AR
 
 # hack to locate expat/iconv in /usr/local on BSD systems
 CPPFLAGS="$CPPFLAGS -I/usr/local/include"
@@ -68,6 +72,9 @@ AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_AR
 AC_PROG_RANLIB
+
+dnl Checks for embedded interpretors.
+INN_ARG_PYTHON
 
 AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #ifdef __GNUC__
@@ -468,6 +475,13 @@ else
 	AC_DEFINE(USE_64BIT, 0, [64-bit document and word IDs])
 	AC_MSG_RESULT([no])
 fi
+
+# we can now set preprocessor flags for both C and C++ compilers
+CPPFLAGS="$CPPFLAGS $MYSQL_CFLAGS $PGSQL_CFLAGS "
+
+AM_CONDITIONAL(USE_PYTHON, test x"$USE_PYTHON" = xDO)
+CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
+LIBS="$LIBS $PYTHON_LIBS"
 
 dnl ---
 
