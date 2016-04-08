@@ -64,3 +64,11 @@
 /test/ql/data/*.lock
 /test/ql/*.class
 /test/ql/*.exe
+
+# coreseek
+# for qt-creator
+/*.user
+
+# for patch
+*.rej
+*.orig
